@@ -62,4 +62,5 @@ Arrows to move.
 Z to reveal.  
 X to flag.  
 R to restart.  
+P to pause.  
 Q to quit.
