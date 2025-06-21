@@ -53,5 +53,4 @@ $(BUILD_DIR)/release_%.o: $(SRC_DIR)/%.cpp
 	$(CXX) -c -o $@ $< $(RLS_CXXFLAGS)
 
 clean:
-	rm -rf $(BUILD_DIR)
-	rm $(BIN_DIR)/release $(BIN_DIR)/debug
+	rm -rf $(BUILD_DIR) $(DBG_DIR) $(RLS_DIR)

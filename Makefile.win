@@ -31,7 +31,7 @@ $(shell if not exist $(RLS_DIR) mkdir $(RLS_DIR))
 $(shell if not exist $(BUILD_DIR) mkdir $(BUILD_DIR))
 
 # phony rules
-.PHONY := all debug release clean
+.PHONY := all debug release clean libraries_debug libraries_release both
 
 all: debug
 
@@ -40,7 +40,7 @@ release: $(RLS_DIR)/release_stripped.exe $(RLS_DIR)/release.exe libraries_releas
 both: debug release
 
 libraries_debug: $(LIBS_DBG)
-libraries_debug: $(LIBS_RLS)
+libraries_release: $(LIBS_RLS)
 
 # linking
 $(DBG_DIR)/debug.exe: $(DBG_OBJS)
