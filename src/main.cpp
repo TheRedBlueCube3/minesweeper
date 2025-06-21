@@ -19,7 +19,7 @@ void startGame(Board &board)
     bool gameRunning = true;
 
     time_t startTime = time(nullptr);
-    int elapsedTime;
+    int elapsedTime = 0;
 
     bool isPaused = false;
     time_t startPauseTime = 0;
@@ -27,11 +27,14 @@ void startGame(Board &board)
     time_t totalpausetime = 0;
     while (gameRunning)
     {
+
         usleep((1000 / MAX_TIME) * 1000);
         if (board.isGameOver() || board.isGameWon())
         {
             gameRunning = false;
         }
+        if (!isPaused)
+            elapsedTime = difftime(time(NULL), startTime) - totalpausetime;
         char flags[5];
         char tim[5];
         sprintf(flags, "%03d", minesLeft);
@@ -183,8 +186,6 @@ void startGame(Board &board)
 
         if (isPaused)
             continue;
-
-        elapsedTime = difftime(time(NULL), startTime) - totalpausetime;
 
         refresh();
     }
