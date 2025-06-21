@@ -55,3 +55,10 @@ sudo dnf install ncurses-devel
 Search engines are your best friend.
 
 Then rename `Makefile.unix`, press the make button, and a moment later, you got it.
+
+## Controls
+
+Arrows to move.  
+Z to reveal.  
+X to flag.  
+R to restart.
