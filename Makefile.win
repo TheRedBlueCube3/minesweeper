@@ -1,0 +1,69 @@
+# compiler stuff
+CXX := c++
+CXXFLAGS := -I include -std=c++11 -Wall -Wextra
+DBG_CXXFLAGS := $(CXXFLAGS) -g
+RLS_CXXFLAGS := $(CXXFLAGS) -O2
+
+# linker stuff
+LDFLAGS := -L C:\msys64\mingw64\bin -lncursesw6
+DBG_LDFLAGS := $(LDFLAGS)
+RLS_STRP_LDFLAGS := $(LDFLAGS) -s
+
+# directories
+BUILD_DIR := build
+SRC_DIR := src
+BIN_DIR := bin
+DBG_DIR := $(BIN_DIR)\debug
+RLS_DIR := $(BIN_DIR)\release
+LIB_DIR := lib
+
+# sources and objects
+LIBS := $(wildcard $(LIB_DIR)/*.dll)
+LIBS_DBG := $(patsubst $(LIB_DIR)/%.dll, $(DBG_DIR)\\%.dll, $(LIBS))
+LIBS_RLS := $(patsubst $(LIB_DIR)/%.dll, $(RLS_DIR)\\%.dll, $(LIBS))
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+DBG_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/debug_%.o,$(SRCS))
+RLS_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/release_%.o,$(SRCS))
+
+$(shell if not exist $(BIN_DIR) mkdir $(BIN_DIR))
+$(shell if not exist $(DBG_DIR) mkdir $(DBG_DIR))
+$(shell if not exist $(RLS_DIR) mkdir $(RLS_DIR))
+$(shell if not exist $(BUILD_DIR) mkdir $(BUILD_DIR))
+
+# phony rules
+.PHONY := all debug release clean libraries_debug libraries_release both
+
+all: debug
+
+debug: $(DBG_DIR)/debug.exe libraries_debug
+release: $(RLS_DIR)/release_stripped.exe $(RLS_DIR)/release.exe libraries_release
+both: debug release
+
+libraries_debug: $(LIBS_DBG)
+libraries_release: $(LIBS_RLS)
+
+# linking
+$(DBG_DIR)/debug.exe: $(DBG_OBJS)
+	$(CXX) -o $@ $^ $(DBG_LDFLAGS)
+
+$(RLS_DIR)/release_stripped.exe: $(RLS_OBJS)
+	$(CXX) -o $@ $^ $(RLS_STRP_LDFLAGS)
+
+$(RLS_DIR)/release.exe: $(RLS_OBJS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
+
+# compiling
+$(BUILD_DIR)/debug_%.o: $(SRC_DIR)/%.cpp
+	$(CXX) -c -o $@ $< $(DBG_CXXFLAGS)
+
+$(BUILD_DIR)/release_%.o: $(SRC_DIR)/%.cpp
+	$(CXX) -c -o $@ $< $(RLS_CXXFLAGS)
+
+$(DBG_DIR)\\%.dll: $(LIB_DIR)\\%.dll
+	xcopy $< $(DBG_DIR)\ >nul
+
+$(RLS_DIR)\\%.dll: $(LIB_DIR)\\%.dll
+	xcopy $< $(RLS_DIR)\ >nul
+
+clean:
+	rmdir /s /q $(BUILD_DIR) $(DBG_DIR) $(RLS_DIR)
