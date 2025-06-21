@@ -1,0 +1,53 @@
+# compiler stuff
+CXX := c++
+CXXFLAGS := -I include -std=c++11 -Wall -Wextra
+DBG_CXXFLAGS := $(CXXFLAGS) -g
+RLS_CXXFLAGS := $(CXXFLAGS) -O2
+
+# linker stuff
+LDFLAGS := -lncursesw
+DBG_LDFLAGS := $(LDFLAGS)
+RLS_LDFLAGS := $(LDFLAGS) -s
+
+# directories
+BUILD_DIR := build
+SRC_DIR := src
+BIN_DIR := bin
+DBG_DIR := $(BIN_DIR)/debug
+RLS_DIR := $(BIN_DIR)/release
+
+# sources and objects
+SRCS := $(wildcard $(SRC_DIR)/*.cpp)
+DBG_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/debug_%.o,$(SRCS))
+RLS_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/release_%.o,$(SRCS))
+
+$(shell mkdir -p $(BUILD_DIR))
+# $(shell if not exist $(BUILD_DIR)/debug mkdir $(BUILD_DIR)/debug)
+# $(shell  $(BUILD_DIR)/release)
+
+# phony rules
+.PHONY := all debug release clean
+
+all: debug
+
+debug: $(BIN_DIR)/debug
+release: $(BIN_DIR)/release
+both: debug release
+
+# linking
+$(BIN_DIR)/debug: $(DBG_OBJS)
+	$(CXX) -o $@ $^ $(DBG_LDFLAGS)
+
+$(BIN_DIR)/release: $(RLS_OBJS)
+	$(CXX) -o $@ $^ $(RLS_LDFLAGS)
+
+# compiling
+$(BUILD_DIR)/debug_%.o: $(SRC_DIR)/%.cpp
+	$(CXX) -c -o $@ $< $(DBG_CXXFLAGS)
+
+$(BUILD_DIR)/release_%.o: $(SRC_DIR)/%.cpp
+	$(CXX) -c -o $@ $< $(RLS_CXXFLAGS)
+
+clean:
+	rm -rf $(BUILD_DIR)
+	rm $(BIN_DIR)/release $(BIN_DIR)/debug
