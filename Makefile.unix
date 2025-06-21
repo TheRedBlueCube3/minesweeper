@@ -21,25 +21,29 @@ SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 DBG_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/debug_%.o,$(SRCS))
 RLS_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/release_%.o,$(SRCS))
 
+$(shell mkdir -p $(BIN_DIR))
+$(shell mkdir -p $(DBG_DIR))
+$(shell mkdir -p $(RLS_DIR))
 $(shell mkdir -p $(BUILD_DIR))
-# $(shell if not exist $(BUILD_DIR)/debug mkdir $(BUILD_DIR)/debug)
-# $(shell  $(BUILD_DIR)/release)
 
 # phony rules
 .PHONY := all debug release clean
 
 all: debug
 
-debug: $(BIN_DIR)/debug
-release: $(BIN_DIR)/release
+debug: $(DBG_DIR)/debug
+release: $(RLS_DIR)/release $(RLS_DIR)/release_stripped
 both: debug release
 
 # linking
-$(BIN_DIR)/debug: $(DBG_OBJS)
+$(DBG_DIR)/debug: $(DBG_OBJS)
 	$(CXX) -o $@ $^ $(DBG_LDFLAGS)
 
-$(BIN_DIR)/release: $(RLS_OBJS)
+$(RLS_DIR)/release_stripped: $(RLS_OBJS)
 	$(CXX) -o $@ $^ $(RLS_LDFLAGS)
+
+$(RLS_DIR)/release: $(RLS_OBJS)
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
 # compiling
 $(BUILD_DIR)/debug_%.o: $(SRC_DIR)/%.cpp

@@ -25,6 +25,7 @@ SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 DBG_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/debug_%.o,$(SRCS))
 RLS_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/release_%.o,$(SRCS))
 
+$(shell if not exist $(BIN_DIR) mkdir $(BIN_DIR))
 $(shell if not exist $(DBG_DIR) mkdir $(DBG_DIR))
 $(shell if not exist $(RLS_DIR) mkdir $(RLS_DIR))
 $(shell if not exist $(BUILD_DIR) mkdir $(BUILD_DIR))
