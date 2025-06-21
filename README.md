@@ -6,6 +6,7 @@ Minesweeper is a classic puzzle game where the objective is to clear a rectangul
 
 The board consists of hidden cells, some containing mines. Uncover a cell by selecting its coordinates. If it's a mine, you lose. If it's safe, a number appears indicating how many mines are adjacent to that cell.
 **Use logic to deduce mine locations and mark them with flags.**
+Marking all mines with flags isn't necessary, but helps.
 
 ### Clear all non-mine cells to win!
 
@@ -61,4 +62,6 @@ Then rename `Makefile.unix`, press the make button, and a moment later, you got 
 Arrows to move.  
 Z to reveal.  
 X to flag.  
-R to restart.
+R to restart.  
+P to pause.  
+Q to quit.
