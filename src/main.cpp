@@ -21,6 +21,10 @@ void startGame(Board &board)
     time_t startTime = time(nullptr);
     int elapsedTime;
 
+    bool isPaused = false;
+    time_t startPauseTime = 0;
+    time_t pauseTime = 0;
+    time_t totalpausetime = 0;
     while (gameRunning)
     {
         usleep((1000 / MAX_TIME) * 1000);
@@ -28,7 +32,6 @@ void startGame(Board &board)
         {
             gameRunning = false;
         }
-        elapsedTime = difftime(time(NULL), startTime);
         char flags[5];
         char tim[5];
         sprintf(flags, "%03d", minesLeft);
@@ -36,7 +39,10 @@ void startGame(Board &board)
         attron(COLOR_PAIR(3));
         mvprintw(1, 1, "%s", flags);
         attroff(COLOR_PAIR(3));
-        mvprintw(1, 5, ":)");
+        if (!isPaused)
+            mvprintw(1, 5, ":)");
+        else
+            mvprintw(1, 5, ":|");
         attron(COLOR_PAIR(3));
         mvprintw(1, 8, "%s", tim);
         attroff(COLOR_PAIR(3));
@@ -162,7 +168,23 @@ void startGame(Board &board)
             startTime = time(NULL);
             board.regenerateBoard();
             break;
+        case 'p':
+            if (isPaused)
+            {
+                pauseTime = difftime(time(NULL), startPauseTime);
+                totalpausetime += pauseTime;
+            }
+            else
+            {
+                startPauseTime = time(NULL);
+            }
+            isPaused = !isPaused;
         }
+
+        if (isPaused)
+            continue;
+
+        elapsedTime = difftime(time(NULL), startTime) - totalpausetime;
 
         refresh();
     }

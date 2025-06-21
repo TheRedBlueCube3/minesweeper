@@ -61,4 +61,5 @@ Then rename `Makefile.unix`, press the make button, and a moment later, you got 
 Arrows to move.  
 Z to reveal.  
 X to flag.  
-R to restart.
+R to restart.  
+Q to quit.
