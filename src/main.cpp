@@ -169,6 +169,7 @@ void startGame(Board &board)
             break;
         case 'r':
             startTime = time(NULL);
+            minesLeft = board.getMineCount();
             board.regenerateBoard();
             break;
         case 'p':
