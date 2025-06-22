@@ -156,7 +156,7 @@ void startGame(Board &board)
             cursorX = (cursorX < boardSize.x - 1) ? cursorX + 1 : 0;
             break;
         case 'q':
-            return;
+            exit(0);
             break;
         case 'z':
             if (!somethingHasBeenDone)
