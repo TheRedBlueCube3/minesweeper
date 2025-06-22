@@ -167,6 +167,8 @@ void startGame(Board &board)
             board.revealCellAt(cursorX, cursorY);
             break;
         case 'x':
+            if (board.getCellStateAt(cursorX, cursorY) == Cell::State::Revealed)
+                break;
             if (!somethingHasBeenDone)
             {
                 startTime = time(nullptr);
@@ -202,12 +204,24 @@ void startGame(Board &board)
             isPaused = !isPaused;
             break;
         case 'c':
+            if (board.getCellStateAt(cursorX, cursorY) != Cell::State::Revealed)
+            {
+                break;
+            }
             if (!somethingHasBeenDone)
             {
                 startTime = time(nullptr);
                 somethingHasBeenDone = true;
             }
             auto neighbors = board.getNeighborsOf(cursorX, cursorY);
+            int flagCount = 0;
+            for (const Cell &neighbor : neighbors)
+            {
+                if (neighbor.getState() == Cell::State::Flagged)
+                    flagCount++;
+            }
+            if (static_cast<int>(board.revealCellAt(cursorX, cursorY).getContent()) > flagCount)
+                break;
             for (const Cell &neighbor : neighbors)
             {
                 if (neighbor.getState() == Cell::State::Flagged)

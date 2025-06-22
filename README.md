@@ -20,6 +20,10 @@ R to restart.
 P to pause.  
 Q to quit.
 
+You can't chord if the number isn't equal to the number of flags it's near.
+You can't see the board if you're paused to (help) prevent cheating.
+You can't flag already revealed cells.
+
 ## Compilation
 
 By default, the Makefile compiles in debug mode, so to compile both, use `make both`.
