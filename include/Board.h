@@ -20,6 +20,7 @@ public:
     int getMineCount() const;
     void regenerateBoard();
     bool isGameWon() const;
+    std::vector<Cell> getNeighborsOf(int x, int y);
 
 private:
     Vector2 size;

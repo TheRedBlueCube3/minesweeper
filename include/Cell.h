@@ -38,6 +38,7 @@ public:
     void toggleFlag();
     Content getContent() const;
     void setContent(Content newContent);
+    Vector2 getPosition() const;
 
 private:
     State state = State::Hidden;

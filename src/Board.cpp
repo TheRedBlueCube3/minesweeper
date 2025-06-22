@@ -40,27 +40,36 @@ Board::Board(int w, int h, short mines) : size(w, h), mines(mines), isFirstClick
             if (cell.getContent() != Cell::Content::Mine)
             {
                 int count = 0;
-                for (int dx = -1; dx <= 1; dx++)
+                std::vector<Cell> neighbors = getNeighborsOf(x, y);
+                for (const Cell &neighbor : neighbors)
                 {
-                    for (int dy = -1; dy <= 1; dy++)
+                    if (neighbor.getContent() == Cell::Content::Mine)
                     {
-                        if (dx == 0 && dy == 0)
-                            continue;
-                        int nx = x + dx;
-                        int ny = y + dy;
-                        if (nx >= 0 && nx < w && ny >= 0 && ny < h)
-                        {
-                            if (cells[ny][nx].getContent() == Cell::Content::Mine)
-                            {
-                                count++;
-                            }
-                        }
+                        count++;
                     }
                 }
                 cell.setContent(static_cast<Cell::Content>(count));
             }
         }
     }
+}
+
+std::vector<Cell> Board::getNeighborsOf(int x, int y)
+{
+    std::vector<Cell> neighbors;
+    for (int dx = -1; dx <= 1; dx++)
+    {
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            if (dx == 0 && dy == 0)
+                continue;
+            int nx = x + dx;
+            int ny = y + dy;
+            if (nx >= 0 && nx < size.x && ny >= 0 && ny < size.y)
+                neighbors.push_back(cells[ny][nx]);
+        }
+    }
+    return neighbors;
 }
 
 bool Board::isGameOver()
@@ -130,22 +139,30 @@ void Board::revealEmptyCells(int x, int y)
 
         if (current.getContent() == Cell::Content::Empty)
         {
-            for (int dx = -1; dx <= 1; dx++)
+            // for (int dx = -1; dx <= 1; dx++)
+            // {
+            //     for (int dy = -1; dy <= 1; dy++)
+            //     {
+            //         if (dx == 0 && dy == 0)
+            //             continue;
+            //         int nx = pos.x + dx;
+            //         int ny = pos.y + dy;
+            //         if (nx >= 0 && nx < size.x && ny >= 0 && ny < size.y)
+            //         {
+            //             Cell &neighbor = cells[ny][nx];
+            //             if (neighbor.getState() == Cell::State::Hidden)
+            //             {
+            //                 q.push(Vector2(nx, ny));
+            //             }
+            //         }
+            //     }
+            // }
+            std::vector<Cell> neighbors = getNeighborsOf(pos.x, pos.y);
+            for (const Cell &neighbor : neighbors)
             {
-                for (int dy = -1; dy <= 1; dy++)
+                if (neighbor.getState() == Cell::State::Hidden)
                 {
-                    if (dx == 0 && dy == 0)
-                        continue;
-                    int nx = pos.x + dx;
-                    int ny = pos.y + dy;
-                    if (nx >= 0 && nx < size.x && ny >= 0 && ny < size.y)
-                    {
-                        Cell &neighbor = cells[ny][nx];
-                        if (neighbor.getState() == Cell::State::Hidden)
-                        {
-                            q.push(Vector2(nx, ny));
-                        }
-                    }
+                    q.push(Vector2(neighbor.position.x, neighbor.position.y));
                 }
             }
         }
@@ -229,21 +246,12 @@ void Board::regenerateBoard()
             if (cell.getContent() != Cell::Content::Mine)
             {
                 int count = 0;
-                for (int dx = -1; dx <= 1; dx++)
+                std::vector<Cell> neighbors = getNeighborsOf(x, y);
+                for (const Cell &neighbor : neighbors)
                 {
-                    for (int dy = -1; dy <= 1; dy++)
+                    if (neighbor.getContent() == Cell::Content::Mine)
                     {
-                        if (dx == 0 && dy == 0)
-                            continue;
-                        int nx = x + dx;
-                        int ny = y + dy;
-                        if (nx >= 0 && nx < size.x && ny >= 0 && ny < size.y)
-                        {
-                            if (cells[ny][nx].getContent() == Cell::Content::Mine)
-                            {
-                                count++;
-                            }
-                        }
+                        count++;
                     }
                 }
                 cell.setContent(static_cast<Cell::Content>(count));

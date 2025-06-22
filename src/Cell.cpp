@@ -36,3 +36,8 @@ void Cell::setContent(Content newContent)
 {
     content = newContent;
 }
+
+Vector2 Cell::getPosition() const
+{
+    return position;
+}
