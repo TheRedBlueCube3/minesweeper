@@ -10,6 +10,16 @@ Marking all mines with flags isn't necessary, but helps.
 
 ### Clear all non-mine cells to win!
 
+## Controls
+
+Arrows to move.  
+Z to reveal.  
+X to flag.  
+C to chord.  
+R to restart.  
+P to pause.  
+Q to quit.
+
 ## Compilation
 
 By default, the Makefile compiles in debug mode, so to compile both, use `make both`.
@@ -56,12 +66,3 @@ sudo dnf install ncurses-devel
 Search engines are your best friend.
 
 Then rename `Makefile.unix`, press the make button, and a moment later, you got it.
-
-## Controls
-
-Arrows to move.  
-Z to reveal.  
-X to flag.  
-R to restart.  
-P to pause.  
-Q to quit.

@@ -183,6 +183,16 @@ void startGame(Board &board)
                 startPauseTime = time(NULL);
             }
             isPaused = !isPaused;
+            break;
+        case 'c':
+            auto neighbors = board.getNeighborsOf(cursorX, cursorY);
+            for (const Cell &neighbor : neighbors)
+            {
+                if (neighbor.getState() == Cell::State::Flagged)
+                    continue;
+                board.revealCellAt(neighbor.getPosition().x, neighbor.getPosition().y);
+            }
+            break;
         }
 
         if (isPaused)
