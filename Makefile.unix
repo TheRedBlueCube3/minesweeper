@@ -15,6 +15,8 @@ SRC_DIR := src
 BIN_DIR := bin
 DBG_DIR := $(BIN_DIR)/debug
 RLS_DIR := $(BIN_DIR)/release
+DBG_EXEC := $(DBG_DIR)/debug
+RLS_STRIPPED_EXEC := $(RLS_DIR)/tuimine
 
 # sources and objects
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
@@ -29,21 +31,18 @@ $(shell mkdir -p $(BUILD_DIR))
 # phony rules
 .PHONY := all debug release clean
 
-all: debug
+all: release
 
-debug: $(DBG_DIR)/debug
-release: $(RLS_DIR)/release $(RLS_DIR)/release_stripped
+debug: $(DBG_EXEC)
+release: $(RLS_STRIPPED_EXEC)
 both: debug release
 
 # linking
-$(DBG_DIR)/debug: $(DBG_OBJS)
+$(DBG_EXEC): $(DBG_OBJS)
 	$(CXX) -o $@ $^ $(DBG_LDFLAGS)
 
-$(RLS_DIR)/release_stripped: $(RLS_OBJS)
+$(RLS_STRIPPED_EXEC): $(RLS_OBJS)
 	$(CXX) -o $@ $^ $(RLS_LDFLAGS)
-
-$(RLS_DIR)/release: $(RLS_OBJS)
-	$(CXX) -o $@ $^ $(LDFLAGS)
 
 # compiling
 $(BUILD_DIR)/debug_%.o: $(SRC_DIR)/%.cpp
