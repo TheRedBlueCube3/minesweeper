@@ -37,8 +37,8 @@ void startGame(Board &board)
         }
         if (!isPaused && somethingHasBeenDone)
             elapsedTime = difftime(time(NULL), startTime) - totalpausetime;
-        char flags[5];
-        char tim[5];
+        char flags[12];
+        char tim[12];
         sprintf(flags, "%03d", minesLeft);
         sprintf(tim, "%03d", elapsedTime);
         attron(COLOR_PAIR(3));
@@ -239,8 +239,8 @@ void startGame(Board &board)
 
     if (board.isGameOver())
     {
-        char flags[3];
-        char tim[3];
+        char flags[12];
+        char tim[12];
         sprintf(flags, "%03d", minesLeft);
         sprintf(tim, "%03d", elapsedTime);
         attron(COLOR_PAIR(3));
@@ -262,8 +262,8 @@ void startGame(Board &board)
     }
     else if (board.isGameWon())
     {
-        char flags[3];
-        char tim[3];
+        char flags[12];
+        char tim[12];
         sprintf(flags, "%03d", minesLeft);
         sprintf(tim, "%03d", elapsedTime);
         attron(COLOR_PAIR(3));
