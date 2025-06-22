@@ -26,8 +26,6 @@ You can't flag already revealed cells.
 
 ## Compilation
 
-By default, the Makefile compiles in debug mode, so to compile both, use `make both`.
-
 ### Windows
 
 For compiling on Windows, you need MSYS2 and MinGW-w64.
