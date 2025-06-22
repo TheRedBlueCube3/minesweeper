@@ -18,13 +18,15 @@ void startGame(Board &board)
     refresh();
     bool gameRunning = true;
 
-    time_t startTime = time(nullptr);
+    time_t startTime = 0;
     int elapsedTime = 0;
 
     bool isPaused = false;
     time_t startPauseTime = 0;
     time_t pauseTime = 0;
     time_t totalpausetime = 0;
+    bool somethingHasBeenDone = false;
+
     while (gameRunning)
     {
 
@@ -33,7 +35,7 @@ void startGame(Board &board)
         {
             gameRunning = false;
         }
-        if (!isPaused)
+        if (!isPaused && somethingHasBeenDone)
             elapsedTime = difftime(time(NULL), startTime) - totalpausetime;
         char flags[5];
         char tim[5];
@@ -157,9 +159,19 @@ void startGame(Board &board)
             return;
             break;
         case 'z':
+            if (!somethingHasBeenDone)
+            {
+                startTime = time(nullptr);
+                somethingHasBeenDone = true;
+            }
             board.revealCellAt(cursorX, cursorY);
             break;
         case 'x':
+            if (!somethingHasBeenDone)
+            {
+                startTime = time(nullptr);
+                somethingHasBeenDone = true;
+            }
             if (board.getCellStateAt(cursorX, cursorY) == Cell::State::Flagged)
             {
                 minesLeft++;
@@ -190,6 +202,11 @@ void startGame(Board &board)
             isPaused = !isPaused;
             break;
         case 'c':
+            if (!somethingHasBeenDone)
+            {
+                startTime = time(nullptr);
+                somethingHasBeenDone = true;
+            }
             auto neighbors = board.getNeighborsOf(cursorX, cursorY);
             for (const Cell &neighbor : neighbors)
             {
