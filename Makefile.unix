@@ -18,6 +18,12 @@ RLS_DIR := $(BIN_DIR)/release
 DBG_EXEC := $(DBG_DIR)/debug
 RLS_STRIPPED_EXEC := $(RLS_DIR)/tuimine
 
+# install stuff
+PREFIX ?= /usr/local
+BINDIR ?= $(PREFIX)/bin
+DATADIR ?= $(PREFIX)/share
+APPLICATION ?= tuimine
+
 # sources and objects
 SRCS := $(wildcard $(SRC_DIR)/*.cpp)
 DBG_OBJS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/debug_%.o,$(SRCS))
@@ -29,7 +35,7 @@ $(shell mkdir -p $(RLS_DIR))
 $(shell mkdir -p $(BUILD_DIR))
 
 # phony rules
-.PHONY := all debug release clean
+.PHONY := all debug release clean install uninstall
 
 all: release
 
@@ -50,6 +56,14 @@ $(BUILD_DIR)/debug_%.o: $(SRC_DIR)/%.cpp
 
 $(BUILD_DIR)/release_%.o: $(SRC_DIR)/%.cpp
 	$(CXX) -c -o $@ $< $(RLS_CXXFLAGS)
+
+install: release
+	install -d $(DESTDIR)$(BINDIR)
+	install -m 755 $(RLS_STRIPPED_EXEC) $(DESTDIR)$(BINDIR)/$(APPLICATION)
+
+uninstall:
+	rm -f $(DESTDIR)$(BINDIR)/$(APPLICATION)
+
 
 clean:
 	rm -rf $(BUILD_DIR) $(DBG_DIR) $(RLS_DIR)
