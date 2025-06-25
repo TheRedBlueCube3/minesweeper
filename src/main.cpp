@@ -354,8 +354,8 @@ int main()
             }
             else
             {
-                w = 16;
-                h = 30;
+                w = 30;
+                h = 16;
                 mines = 99;
             }
             Board board(w, h, mines);
