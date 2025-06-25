@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 thorium1256
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "Vector2.h"
 
 Vector2::Vector2(int x, int y) : x(x), y(y) {}
