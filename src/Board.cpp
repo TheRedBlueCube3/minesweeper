@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 thorium1256
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "Board.h"
 #include <iostream>
 

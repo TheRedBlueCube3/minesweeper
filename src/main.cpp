@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2025 thorium1256
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include <iostream>
 #include <stdexcept>
 #include <ncursesw/ncurses.h>

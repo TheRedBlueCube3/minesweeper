@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2025 thorium1256
+
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+
 # Minesweeper... in the terminal!
 
 Minesweeper is a classic puzzle game where the objective is to clear a rectangular board without detonating any hidden mines.
