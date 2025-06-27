@@ -334,9 +334,9 @@ int main()
         attroff(A_REVERSE);
         mvprintw(3, 2, choice == 1 ? "" : "Intermediate (16x16, 40 mines)");
         attron(A_REVERSE);
-        mvprintw(4, 2, choice == 2 ? "Expert (16x30, 99 mines)" : "");
+        mvprintw(4, 2, choice == 2 ? "Expert (30x16, 99 mines)" : "");
         attroff(A_REVERSE);
-        mvprintw(4, 2, choice == 2 ? "" : "Expert (16x30, 99 mines)");
+        mvprintw(4, 2, choice == 2 ? "" : "Expert (30x16, 99 mines)");
         refresh();
 
         int ch = getch();
