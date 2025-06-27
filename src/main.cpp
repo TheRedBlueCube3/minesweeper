@@ -8,6 +8,15 @@
 #include <ctime>
 #include <unistd.h>
 #include "Board.h"
+#ifndef _WIN32
+#include <signal.h>
+#include <sys/ioctl.h>
+struct winsize w;
+void handleSIGWINCH(int sig)
+{
+    ioctl(STDIN_FILENO, TIOCGWINSZ, &w);
+}
+#endif
 
 #define MAX_TIME 60
 
@@ -33,8 +42,16 @@ void startGame(Board &board)
 
     while (gameRunning)
     {
-
         usleep((1000 / MAX_TIME) * 1000);
+#ifndef _WIN32
+        if((w.ws_row < boardSize.x + 3 )||( w.ws_col < boardSize.y + 2)) {
+            mvprintw(w.ws_col/2, w.ws_row/2, "Your terminal is too small:");
+            mvprintw(w.ws_col / 2 + 1, w.ws_row/2, "Current size: %dx%d", w.ws_row, w.ws_col);
+            mvprintw(w.ws_col / 2 + 2, w.ws_row/2, "Min size: %dx%d", boardSize.x + 3, boardSize.y + 2);
+            refresh();
+            continue;
+        }
+#endif
         if (board.isGameOver() || board.isGameWon())
         {
             gameRunning = false;
@@ -161,6 +178,9 @@ void startGame(Board &board)
             break;
         case 'q':
             exit(0);
+            echo();
+            cbreak();
+            endwin();
             break;
         case 'z':
             if (!somethingHasBeenDone)
@@ -264,6 +284,9 @@ void startGame(Board &board)
                 startGame(newBoard);
             } else if(c == 'q') {
                 exit(0);
+                echo();
+                cbreak();
+                endwin();
             }
         };
     }
@@ -291,6 +314,9 @@ void startGame(Board &board)
                 startGame(newBoard);
             } else if(c == 'q') {
                 exit(0);
+                echo();
+                cbreak();
+                endwin();
             }
         };
     }
@@ -298,12 +324,14 @@ void startGame(Board &board)
 
 int main()
 {
+    signal(SIGWINCH, handleSIGWINCH);
     setlocale(LC_ALL, "");
     initscr();
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
     start_color();
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
