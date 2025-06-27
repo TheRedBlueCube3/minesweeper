@@ -251,12 +251,15 @@ void startGame(Board &board)
         mvprintw(1, 8, "%s", tim);
         attroff(COLOR_PAIR(3));
         refresh();
-        while ((c = getch()) != 'q')
+        while (true)
         {
+            c = getch();
             if (c == 'r')
             {
                 Board newBoard(boardSize.x, boardSize.y, board.getMineCount());
                 startGame(newBoard);
+            } else if(c == 'q') {
+                exit(0);
             }
         };
     }
@@ -275,12 +278,15 @@ void startGame(Board &board)
         attroff(COLOR_PAIR(3));
         refresh();
         int c;
-        while ((c = getch()) != 'q')
+        while (true)
         {
+            c = getch();
             if (c == 'r')
             {
                 Board newBoard(boardSize.x, boardSize.y, board.getMineCount());
                 startGame(newBoard);
+            } else if(c == 'q') {
+                exit(0);
             }
         };
     }
