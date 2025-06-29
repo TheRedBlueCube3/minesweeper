@@ -44,10 +44,11 @@ void startGame(Board &board)
     {
         usleep((1000 / MAX_TIME) * 1000);
 #ifndef _WIN32
-        if((w.ws_row < boardSize.x + 3 )||( w.ws_col < boardSize.y + 2)) {
-            mvprintw(w.ws_col/2, w.ws_row/2, "Your terminal is too small:");
-            mvprintw(w.ws_col / 2 + 1, w.ws_row/2, "Current size: %dx%d", w.ws_row, w.ws_col);
-            mvprintw(w.ws_col / 2 + 2, w.ws_row/2, "Min size: %dx%d", boardSize.x + 3, boardSize.y + 2);
+        if ((w.ws_row < boardSize.x + 3) || (w.ws_col < boardSize.y + 2))
+        {
+            mvprintw(w.ws_col / 2, w.ws_row / 2, "Your terminal is too small:");
+            mvprintw(w.ws_col / 2 + 1, w.ws_row / 2, "Current size: %dx%d", w.ws_row, w.ws_col);
+            mvprintw(w.ws_col / 2 + 2, w.ws_row / 2, "Min size: %dx%d", boardSize.x + 3, boardSize.y + 2);
             refresh();
             continue;
         }
@@ -282,7 +283,9 @@ void startGame(Board &board)
             {
                 Board newBoard(boardSize.x, boardSize.y, board.getMineCount());
                 startGame(newBoard);
-            } else if(c == 'q') {
+            }
+            else if (c == 'q')
+            {
                 exit(0);
                 echo();
                 cbreak();
@@ -312,7 +315,9 @@ void startGame(Board &board)
             {
                 Board newBoard(boardSize.x, boardSize.y, board.getMineCount());
                 startGame(newBoard);
-            } else if(c == 'q') {
+            }
+            else if (c == 'q')
+            {
                 exit(0);
                 echo();
                 cbreak();
@@ -324,14 +329,18 @@ void startGame(Board &board)
 
 int main()
 {
+#ifndef _WIN32
     signal(SIGWINCH, handleSIGWINCH);
+#endif
     setlocale(LC_ALL, "");
     initscr();
     noecho();
     cbreak();
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
+#ifndef _WIN32
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+#endif
 
     start_color();
     init_pair(1, COLOR_BLUE, COLOR_BLACK);
